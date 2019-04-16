@@ -3,8 +3,8 @@ from pytz import timezone
 from datetime import datetime
 
 # param
-cAnnounceId = 531286859611897858 # Channel ID to post the message you want to get a reaction from.
-cAnnounceBotId = 567747363276455980 # Channel ID posted by this BOT.
+cAnnounceId = 542598480292741162 # Channel ID to post the message you want to get a reaction from.
+cAnnounceBotId = 567648171291836425 # Channel ID posted by this BOT.
 
 # initialize client
 client = discord.Client()
