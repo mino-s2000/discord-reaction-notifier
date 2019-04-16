@@ -3,8 +3,8 @@ from pytz import timezone
 from datetime import datetime
 
 # param
-cAnnounceId = 000000000000000000 # Channel ID to post the message you want to get a reaction from.
-cAnnounceBotId = 111111111111111111 # Channel ID posted by this BOT.
+cAnnounceId = 531286859611897858 # Channel ID to post the message you want to get a reaction from.
+cAnnounceBotId = 567747363276455980 # Channel ID posted by this BOT.
 
 # initialize client
 client = discord.Client()
@@ -26,4 +26,4 @@ async def on_reaction_add(reaction, user):
     reply = f'{user} is reacted. Target Message Posted At: {mDatetime}'
     await cAnnounceBot.send(reply)
 
-client.run('token')
+client.run('NTY3NzQ0NjY4NTExNjMzNDA4.XLX_gw.tkdFmlqoBKzHVAfTi0rQ4pengL0')
