@@ -1,1 +1,1 @@
-bot:python discordbot.python
+bot:python discordbot.py
