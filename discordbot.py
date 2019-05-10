@@ -4,8 +4,8 @@ from pytz import timezone
 from datetime import datetime
 
 # param
-getReactionChId = os.environ.get('ENV_GET_REACTION_CH_ID') # Channel ID to post the message you want to get a reaction from.
-postNotifierChId = os.environ.get('ENV_POST_NOTIFIER_CH_ID') # Channel ID posted by this BOT.
+getReactionChId = int(os.environ.get('ENV_GET_REACTION_CH_ID')) # Channel ID to post the message you want to get a reaction from.
+postNotifierChId = int(os.environ.get('ENV_POST_NOTIFIER_CH_ID')) # Channel ID posted by this BOT.
 
 # initialize client
 client = discord.Client()
