@@ -1,8 +1,6 @@
 import os
 import json
 import discord
-from pytz import timezone
-from datetime import datetime
 
 # param
 getReactionChId = int(os.environ.get('ENV_GET_REACTION_CH_ID')) # Channel ID to post the message you want to get a reaction from.
