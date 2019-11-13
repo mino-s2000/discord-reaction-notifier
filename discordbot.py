@@ -50,6 +50,8 @@ async def on_reaction_add(reaction, user):
     new_msg = ''
     for m in msg.split('\n'):
         tmp = m
+        if m.contains('@'):
+            tmp = m.replace('@', '')
         if m == f'> `{user.name}`':
             tmp = f'> `{user.name}` {reaction.emoji}'
         new_msg += f'{tmp}\n'
