@@ -19,9 +19,6 @@
     },
     "ENV_DISCORD_BOT_TOKEN": {
       "description": "Your Discord bot token."
-    },
-    "ENV_MEMBER_ROLE_ID": {
-      "description": "Get reaction user in roles."
     }
   }
 }

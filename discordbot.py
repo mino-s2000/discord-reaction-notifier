@@ -1,5 +1,4 @@
 import os
-import json
 import discord
 import redis
 
@@ -9,6 +8,8 @@ POST_NOTIFIER_CHANNEL_ID = int(os.environ.get('ENV_POST_NOTIFIER_CH_ID'))
 MEMBER_ROLE_ID = int(os.environ.get('ENV_MEMBER_ROLE_ID'))
 REDIS_URL = os.environ.get('REDIS_URL')
 DISCORD_BOT_TOKEN = os.environ.get('ENV_DISCORD_BOT_TOKEN')
+
+r = redis.from_url(REDIS_URL)
 
 # initialize client
 client = discord.Client()
