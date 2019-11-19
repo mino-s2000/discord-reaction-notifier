@@ -11,6 +11,12 @@
       "description": "Channel ID posted by this BOT.",
       "value": ""
     },
+    "ENV_MEMBER_ROLE_ID": {
+      "description": "Get reaction user in roles."
+    },
+    "REDIS_URL": {
+      "description": "Heroku Redis URL."
+    },
     "ENV_DISCORD_BOT_TOKEN": {
       "description": "Your Discord bot token."
     },

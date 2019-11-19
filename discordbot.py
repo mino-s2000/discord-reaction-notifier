@@ -1,11 +1,14 @@
 import os
 import json
 import discord
+import redis
 
 # param
-getReactionChId = int(os.environ.get('ENV_GET_REACTION_CH_ID')) # Channel ID to post the message you want to get a reaction from.
-postNotifierChId = int(os.environ.get('ENV_POST_NOTIFIER_CH_ID')) # Channel ID posted by this BOT.
-memberRoleId = int(os.environ.get('ENV_MEMBER_ROLE_ID')) # Role ID by Guild Member
+GET_REACTION_CHANNEL_ID = int(os.environ.get('ENV_GET_REACTION_CH_ID'))
+POST_NOTIFIER_CHANNEL_ID = int(os.environ.get('ENV_POST_NOTIFIER_CH_ID'))
+MEMBER_ROLE_ID = int(os.environ.get('ENV_MEMBER_ROLE_ID'))
+REDIS_URL = os.environ.get('REDIS_URL')
+DISCORD_BOT_TOKEN = os.environ.get('ENV_DISCORD_BOT_TOKEN')
 
 # initialize client
 client = discord.Client()
@@ -16,43 +19,22 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.channel.id != getReactionChId:
+    if message.channel.id != GET_REACTION_CHANNEL_ID:
         return
     members = message.guild.members
     msg = f'Author: {message.author.name}\n'
-    msg += f'Content: {message.content}\n'
-    reply = ''
-    for member in members:
-        if member.name == message.author.name:
-            continue
-        for role in member.roles:
-            if role.id == memberRoleId:
-                reply += f'> `{member.name}`\n'
-    reply = f'{msg}{reply}'
-    bot_message = await client.get_channel(postNotifierChId).send(reply)
-    json_data = {}
-    with open('message-matching.json', 'r') as fr:
-        json_data = json.load(fr)
-    json_data['message_matching'].append({"announce_id": message.id, "summary_id": bot_message.id})
-    with open('message-matching.json', 'w') as fw:
-        json.dump(json_data, fw, indent = 2)
+    msg += f"Content: {message.content.replace('@', '')}\n"
+    msg += '\n'.join([f'> `{m.name}`' for m in [m for m in members if m.name != message.author.name] for r in m.roles if r.id == MEMBER_ROLE_ID])
+    bot_message = await client.get_channel(POST_NOTIFIER_CHANNEL_ID).send(msg)
+    r.set(message.id, bot_message.id)
 
 @client.event
 async def on_reaction_add(reaction, user):
-    if reaction.message.channel.id != getReactionChId:
+    if reaction.message.channel.id != GET_REACTION_CHANNEL_ID:
         return
-    json_data = {}
-    with open('message-matching.json', 'r') as f:
-        json_data = json.load(f)
-    summary_ids = [x['summary_id'] for x in json_data['message_matching'] if 'announce_id' in x and 'summary_id' in x and x['announce_id'] == reaction.message.id]
-    target_msg = await client.get_channel(postNotifierChId).fetch_message(summary_ids[0])
+    target_msg = await client.get_channel(POST_NOTIFIER_CHANNEL_ID).fetch_message(int(r.get(reaction.message.id)))
     msg = target_msg.content
-    new_msg = ''
-    for m in msg.split('\n'):
-        tmp = m
-        if m == f'> `{user.name}`':
-            tmp = f'> `{user.name}` {reaction.emoji}'
-        new_msg += f'{tmp}\n'
+    new_msg = '\n'.join([f'{m} {reaction.emoji}' if user.name in m else m for m in msg.split('\n')])
     await target_msg.edit(content = new_msg)
 
-client.run(os.environ.get('ENV_DISCORD_BOT_TOKEN'))
+client.run(DISCORD_BOT_TOKEN)
